@@ -1,0 +1,112 @@
+Parameters:
+  GHToken:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: token
+
+Resources:
+  GithubWebhook:
+    Type: AWS::CodePipeline::Webhook
+    Properties:
+      Authentication: GITHUB_HMAC
+      AuthenticationConfiguration:
+        SecretToken: GHToken
+      Filters:
+        - JsonPath: $.ref
+          MatchEquals: refs/heads/{Branch}
+      TargetAction: Source
+      TargetPipeline: !Ref Pipeline
+      TargetPipelineVersion: 1
+      RegisterWithThirdParty: true
+
+#----- IAM ----
+
+  PipelineAdminRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - codepipeline.amazonaws.com
+      Description: Pipeline Administration Role
+      MaxSessionDuration: 3600
+      RoleName: PipelineAdminRole
+
+  PipelineAdminPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: PipelineAdminPolicy
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action:
+              - iam:UpdateRole
+            Resource: !GetAtt PipelineAdminRole.Arn
+      Roles:
+        - !Ref PipelineAdminRole
+
+  PipelineExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - codepipeline.amazonaws.com
+      Description: Pipeline Administration Role
+      MaxSessionDuration: 3600
+      RoleName: PipelineExecutionRole
+
+#----------------------
+
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name: DemoPipeline
+      RestartExecutionOnUpdate: true
+      RoleArn: !GetAtt PipelineExecutionRole.Arn
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: Infra-Source
+              ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Provider: GitHub
+                Version: '1'
+              Configuration:
+                  Owner: ZhangMaKe
+                  Repo: AWSSelfUpdatingPipeline
+                  Branch: master
+                  OAuthToken: !Ref GHToken
+              OutputArtifacts:
+                - Name: infra-source
+        - Name: AdministerPipeline
+          Actions:
+            - Name: AdministerPipeline
+              ActionTypeId:
+                  Category: Deploy
+                  Owner: AWS
+                  Provider: CloudFormation
+                  Version: '1'
+              Configuration:
+                OutputFileName: pipelineStackOutput.json
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                RoleArn: !GetAtt PipelineAdminRole.Arn
+                StackName: PipelineStack
+                ActionMode: CREATE_UPDATE
+                TemplatePath: source::pipeline.yml
+              InputArtifacts:
+                - Name: Infra-Source
+      ArtifactStores:
+        - ArtifactStore:
+            Location: !Ref ArtifactBucket
+            Type: S3
+          Region: us-east-1
+
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
