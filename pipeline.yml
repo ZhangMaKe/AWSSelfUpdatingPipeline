@@ -2,6 +2,10 @@ Parameters:
   GHToken:
     Type: AWS::SSM::Parameter::Value<String>
     Default: token
+  
+  TriggerBranch:
+    Type: String
+    Default: master
 
 Resources:
 
@@ -47,6 +51,10 @@ Resources:
             Action:
               - iam:UpdateRole
             Resource: !GetAtt PipelineAdminRole.Arn
+          - Effect: Allow
+            Action:
+              - cloudformation:DescribeStacks
+            Resource: !Ref AWS::StackId 
       Roles:
         - !Ref PipelineAdminRole
 
@@ -74,8 +82,8 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - s3:GetObject
-            Resource: !GetAtt ArtifactBucket.Arn
+              - s3:PutObject
+            Resource: !Join ['', [!GetAtt ArtifactBucket.Arn, "/*"]]
       Roles:
         - !Ref PipelineExecutionRole
 
@@ -99,7 +107,7 @@ Resources:
               Configuration:
                   Owner: ZhangMaKe
                   Repo: AWSSelfUpdatingPipeline
-                  Branch: master
+                  Branch: !Ref TriggerBranch
                   OAuthToken: !Ref GHToken
               OutputArtifacts:
                 - Name: infra-source
