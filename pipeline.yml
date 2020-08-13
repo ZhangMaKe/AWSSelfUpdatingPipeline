@@ -82,11 +82,11 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - s3:GetObjectAcl
+              - s3:Get*
             Resource: !GetAtt ArtifactBucket.Arn
           - Effect: Allow
             Action:
-              - s3:GetObject
+              - s3:Get*
             Resource: !Join ['', [!GetAtt ArtifactBucket.Arn, "/*"]]
       Roles:
         - !Ref PipelineExecutionRole
