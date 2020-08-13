@@ -2,6 +2,10 @@ Parameters:
   GHToken:
     Type: AWS::SSM::Parameter::Value<String>
     Default: token
+  
+  TriggerBranch:
+    Type: String
+    Default: master
 
 Resources:
 
@@ -99,7 +103,7 @@ Resources:
               Configuration:
                   Owner: ZhangMaKe
                   Repo: AWSSelfUpdatingPipeline
-                  Branch: master
+                  Branch: !Ref TriggerBranch
                   OAuthToken: !Ref GHToken
               OutputArtifacts:
                 - Name: infra-source
