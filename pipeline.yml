@@ -4,6 +4,7 @@ Parameters:
     Default: token
 
 Resources:
+
   GithubWebhook:
     Type: AWS::CodePipeline::Webhook
     Properties:
@@ -27,6 +28,8 @@ Resources:
         Version: 2012-10-17
         Statement:
           - Effect: Allow
+            Action:
+              - sts:AssumeRole
             Principal:
               Service:
                 - codepipeline.amazonaws.com
@@ -54,12 +57,27 @@ Resources:
         Version: 2012-10-17
         Statement:
           - Effect: Allow
+            Action: 
+              - sts:AssumeRole
             Principal:
               Service:
                 - codepipeline.amazonaws.com
       Description: Pipeline Administration Role
       MaxSessionDuration: 3600
       RoleName: PipelineExecutionRole
+
+  PipelineExecutionPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: PipelineAdminPolicy
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:GetObject
+            Resource: !GetAtt ArtifactBucket.Arn
+      Roles:
+        - !Ref PipelineExecutionRole
 
 #----------------------
 
@@ -72,7 +90,7 @@ Resources:
       Stages:
         - Name: Source
           Actions:
-            - Name: Infra-Source
+            - Name: Source
               ActionTypeId:
                 Category: Source
                 Owner: ThirdParty
@@ -101,7 +119,7 @@ Resources:
                 ActionMode: CREATE_UPDATE
                 TemplatePath: source::pipeline.yml
               InputArtifacts:
-                - Name: Infra-Source
+                - Name: infra-source
       ArtifactStores:
         - ArtifactStore:
             Location: !Ref ArtifactBucket
