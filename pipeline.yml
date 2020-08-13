@@ -78,7 +78,7 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - s3:Get*
+              - s3:GetObjectAcl
             Resource: !GetAtt ArtifactBucket.Arn
           - Effect: Allow
             Action:
