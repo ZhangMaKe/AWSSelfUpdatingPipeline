@@ -116,7 +116,7 @@ Resources:
                 RoleArn: !GetAtt PipelineAdminRole.Arn
                 StackName: PipelineStack
                 ActionMode: CREATE_UPDATE
-                TemplatePath: source::pipeline.yml
+                TemplatePath: infra-source::pipeline.yml
               InputArtifacts:
                 - Name: infra-source
       ArtifactStores:
