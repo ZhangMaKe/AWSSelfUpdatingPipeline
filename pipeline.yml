@@ -60,7 +60,7 @@ Resources:
   PipelineExecutionPolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: PipelineAdminPolicy
+      PolicyName: PipelineExecutionPolicy
       PolicyDocument:
         Statement:
           - Effect: Allow
