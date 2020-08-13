@@ -78,7 +78,7 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - s3:GetObject
+              - s3:*
             Resource: !GetAtt ArtifactBucket.Arn
       Roles:
         - !Ref PipelineExecutionRole
