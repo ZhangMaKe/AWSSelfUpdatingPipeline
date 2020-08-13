@@ -70,19 +70,6 @@ Resources:
       MaxSessionDuration: 3600
       RoleName: PipelineExecutionRole
 
-  PipelineExecutionPolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: PipelineAdminPolicy
-      PolicyDocument:
-        Statement:
-          - Effect: Allow
-            Action:
-              - s3:GetObject
-            Resource: !Join ['', [!GetAtt ArtifactBucket.Arn, "/*"]]
-      Roles:
-        - !Ref PipelineExecutionRole
-
 #----------------------
 
   Pipeline:
