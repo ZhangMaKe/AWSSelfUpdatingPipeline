@@ -75,6 +75,7 @@ Resources:
           - Effect: Allow
             Action:
               - cloudformation:DescribeStacks
+              - cloudformation:UpdateStack
             Resource: !Ref AWS::StackId
           - Effect: Allow
             Action:
