@@ -51,6 +51,10 @@ Resources:
             Action:
               - iam:UpdateRole
             Resource: !GetAtt PipelineAdminRole.Arn
+          - Effect: Allow
+            Action:
+              - cloudformation:DescribeStacks
+            Resource: !Ref AWS::StackId 
       Roles:
         - !Ref PipelineAdminRole
 
