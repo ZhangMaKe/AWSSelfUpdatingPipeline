@@ -36,7 +36,7 @@ Resources:
               - sts:AssumeRole
             Principal:
               Service:
-                - codepipeline.amazonaws.com
+                - cloudformation.amazonaws.com
       Description: Pipeline Administration Role
       MaxSessionDuration: 3600
       RoleName: PipelineAdminRole
