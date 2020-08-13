@@ -83,10 +83,12 @@ Resources:
           - Effect: Allow
             Action:
               - s3:Get*
+              - s3:List*
             Resource: !GetAtt ArtifactBucket.Arn
           - Effect: Allow
             Action:
               - s3:Get*
+              - s3:List*
             Resource: !Join ['', [!GetAtt ArtifactBucket.Arn, "/*"]]
       Roles:
         - !Ref PipelineExecutionRole
