@@ -96,3 +96,20 @@ Resources:
 
   ArtifactBucket:
     Type: AWS::S3::Bucket
+
+  ArtifactBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties: 
+      Bucket: !Ref ArtifactBucket
+      PolicyDocument: 
+        Statement: 
+        - 
+          Action: 
+            - s3:GetObject
+            - s3:PutObject
+          Effect: "Allow"
+          Resource: !Sub "arn:aws:s3:::${ArtifactBucket}/*"
+          Principal: 
+            AWS: 
+              - !ImportValue PipelineExecutionRoleArn
+
