@@ -91,7 +91,7 @@ Resources:
               StringEquals: 
                 'iam:ResourceTag/ManagedByPipeline': 'true' 
       Roles:
-        - !Ref PipelineIAMAdminRole
+        - !Ref PipelineExecutionRole
 
 Outputs:
   PipelineIAMAdminRoleArn:
