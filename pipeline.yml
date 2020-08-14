@@ -2,6 +2,10 @@ Parameters:
   GHToken:
     Type: AWS::SSM::Parameter::Value<String>
     Default: token
+
+  GHTokenParamName:
+    Type: String
+    Default: token
   
   TriggerBranch:
     Type: String
@@ -36,27 +40,10 @@ Resources:
               - sts:AssumeRole
             Principal:
               Service:
-                - codepipeline.amazonaws.com
+                - cloudformation.amazonaws.com
       Description: Pipeline Administration Role
       MaxSessionDuration: 3600
       RoleName: PipelineAdminRole
-
-  PipelineAdminPolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: PipelineAdminPolicy
-      PolicyDocument:
-        Statement:
-          - Effect: Allow
-            Action:
-              - iam:UpdateRole
-            Resource: !GetAtt PipelineAdminRole.Arn
-          - Effect: Allow
-            Action:
-              - cloudformation:DescribeStacks
-            Resource: !Ref AWS::StackId 
-      Roles:
-        - !Ref PipelineAdminRole
 
   PipelineExecutionRole:
     Type: AWS::IAM::Role
@@ -74,7 +61,7 @@ Resources:
       MaxSessionDuration: 3600
       RoleName: PipelineExecutionRole
 
-  PipelineExecutionPolicy:
+  PipelineAdminPolicy:
     Type: AWS::IAM::Policy
     Properties:
       PolicyName: PipelineAdminPolicy
@@ -82,8 +69,47 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
+              - ssm:GetParameters
+            Resource: !Sub 'arn:aws:ssm:us-east-1:274301400958:parameter/${GHTokenParamName}'
+          - Effect: Allow
+            Action:
+              - codepipeline:DeregisterWebhookWithThirdParty 
+              - codepipeline:DeletePipeline
+            Resource: !Ref Pipeline
+          - Effect: Allow
+            Action:
+              - iam:DeleteRolePolicy
+              - iam:DeleteRole
+            Resource:
+              - !GetAtt PipelineExecutionRole.Arn
+              - !GetAtt PipelineAdminRole.Arn
+      Roles:
+        - !Ref PipelineAdminRole
+
+  PipelineExecutionPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: PipelineExecutionPolicy
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action:
               - s3:PutObject
+              - s3:GetObject
             Resource: !Join ['', [!GetAtt ArtifactBucket.Arn, "/*"]]
+          - Effect: Allow
+            Action:
+              - iam:UpdateRole
+            Resource: !GetAtt PipelineAdminRole.Arn
+          - Effect: Allow
+            Action:
+              - cloudformation:DescribeStacks
+              - cloudformation:UpdateStack
+            Resource: !Ref AWS::StackId
+          - Effect: Allow
+            Action:
+              - iam:PassRole
+            Resource: !GetAtt PipelineAdminRole.Arn
       Roles:
         - !Ref PipelineExecutionRole
 
@@ -125,7 +151,7 @@ Resources:
                 RoleArn: !GetAtt PipelineAdminRole.Arn
                 StackName: PipelineStack
                 ActionMode: CREATE_UPDATE
-                TemplatePath: source::pipeline.yml
+                TemplatePath: infra-source::pipeline.yml
               InputArtifacts:
                 - Name: infra-source
       ArtifactStores:
