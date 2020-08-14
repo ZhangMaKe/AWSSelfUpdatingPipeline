@@ -77,6 +77,22 @@ Resources:
       Roles:
         - !Ref PipelineIAMAdminRole
 
+  PipelineAdminPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: PipelineAdminPolicy
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: 
+              - ssm:GetParameters
+            Resource: '*'
+            Condition:
+              StringEquals: 
+                'aws:ResourceTag/ManagedByPipeline': 'true' 
+      Roles:
+        - !Ref PipelineAdminRole
+
   PipelineExecutionRolePolicy:
     Type: AWS::IAM::Policy
     Properties:
