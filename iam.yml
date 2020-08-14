@@ -105,6 +105,9 @@ Resources:
             Condition:
               StringEquals: 
                 'iam:ResourceTag/ManagedByPipeline': 'true' 
+          - Effect: Allow
+            Action: codepipeline:DeregisterWebhookWithThirdParty
+            Resource: '*'
       Roles:
         - !Ref PipelineAdminRole
 

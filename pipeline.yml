@@ -115,6 +115,7 @@ Resources:
         - 
           Action: 
             - s3:DeleteBucket
+            - s3:DeleteBucketPolicy
           Effect: "Allow"
           Resource: !Sub "arn:aws:s3:::${ArtifactBucket}"
           Principal: 
