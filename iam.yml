@@ -86,10 +86,11 @@ Resources:
           - Effect: Allow
             Action: 
               - cloudformation:DescribeStacks
+              - iam:PassRole
             Resource: '*'
             Condition:
               StringEquals: 
-                'iam:ResourceTag/ManagedByPipeline': 'true' 
+                'aws:ResourceTag/ManagedByPipeline': 'true' 
       Roles:
         - !Ref PipelineExecutionRole
 
