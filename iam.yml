@@ -86,6 +86,7 @@ Resources:
           - Effect: Allow
             Action: 
               - ssm:GetParameters
+              - codepipeline:UpdatePipeline
             Resource: '*'
             Condition:
               StringEquals: 
