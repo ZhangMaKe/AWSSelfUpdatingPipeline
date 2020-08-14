@@ -87,6 +87,7 @@ Resources:
             Action: 
               - ssm:GetParameters
               - codepipeline:UpdatePipeline
+              - iam:PassRole
             Resource: '*'
             Condition:
               StringEquals: 
