@@ -90,6 +90,7 @@ Resources:
               - codepipeline:StartPipelineExecution
               - codepipeline:DeletePipeline
               - codepipeline:DeregisterWebhookWithThirdParty
+              - s3:DeleteBucket
             Resource: '*'
             Condition:
               StringEquals: 
@@ -101,15 +102,6 @@ Resources:
             Condition:
               StringEquals: 
                 'iam:ResourceTag/ManagedByPipeline': 'true' 
-          - Effect: Allow
-            Action:
-              - s3:PutObject
-              - s3:GetObject
-              - s3:DeleteBucket
-            Resource: '*'
-            Condition:
-              StringEquals: 
-                's3:ResourceTag/ManagedByPipeline': 'true' 
       Roles:
         - !Ref PipelineAdminRole
 
@@ -134,6 +126,14 @@ Resources:
             Condition:
               StringEquals: 
                 'iam:ResourceTag/ManagedByPipeline': 'true' 
+          - Effect: Allow
+            Action:
+              - s3:PutObject
+              - s3:GetObject
+            Resource: '*'
+            Condition:
+              StringEquals: 
+                's3:ResourceTag/ManagedByPipeline': 'true' 
       Roles:
         - !Ref PipelineExecutionRole
 
