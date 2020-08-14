@@ -51,7 +51,7 @@ Resources:
                   OAuthToken: !Ref GHToken
               OutputArtifacts:
                 - Name: infra-source
-        - Name: AdministerPipeline
+        - Name: AdministerIAM
           Actions:
             - Name: AdministerIAM
               ActionTypeId:
@@ -68,7 +68,7 @@ Resources:
                 TemplatePath: infra-source::iam.yml
               InputArtifacts:
                 - Name: infra-source
-              RunOrder: 2
+              RunOrder: 1
             - Name: AdministerPipeline
               ActionTypeId:
                   Category: Deploy
