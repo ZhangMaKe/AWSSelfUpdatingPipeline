@@ -115,6 +115,8 @@ Resources:
             Action: 
               - cloudformation:DescribeStacks
               - cloudformation:UpdateStack
+              - s3:PutObject
+              - s3:GetObject
             Resource: '*'
             Condition:
               StringEquals: 
@@ -126,14 +128,6 @@ Resources:
             Condition:
               StringEquals: 
                 'iam:ResourceTag/ManagedByPipeline': 'true' 
-          - Effect: Allow
-            Action:
-              - s3:PutObject
-              - s3:GetObject
-            Resource: '*'
-            Condition:
-              StringEquals: 
-                's3:ResourceTag/ManagedByPipeline': 'true' 
       Roles:
         - !Ref PipelineExecutionRole
 
