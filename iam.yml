@@ -91,7 +91,9 @@ Resources:
               - codepipeline:DeletePipeline
               - codepipeline:DeregisterWebhookWithThirdParty
               - codepipeline:GetPipeline
+              - codepipeline:DeleteWebhook
               - s3:DeleteBucket
+              - s3:DeleteBucketPolicy
             Resource: '*'
             Condition:
               StringEquals: 
