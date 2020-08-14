@@ -77,7 +77,21 @@ Resources:
       Roles:
         - !Ref PipelineIAMAdminRole
 
-        
+  PipelineExecutionRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: PipelineExecutionRolePolicy
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: 
+              - cloudformation:DescribeStacks
+            Resource: '*'
+            Condition:
+              StringEquals: 
+                'iam:ResourceTag/ManagedByPipeline': 'true' 
+      Roles:
+        - !Ref PipelineIAMAdminRole
 
 Outputs:
   PipelineIAMAdminRoleArn:
