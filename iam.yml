@@ -90,6 +90,7 @@ Resources:
               - codepipeline:StartPipelineExecution
               - codepipeline:DeletePipeline
               - codepipeline:DeregisterWebhookWithThirdParty
+              - codepipeline:GetPipeline
               - s3:DeleteBucket
             Resource: '*'
             Condition:
@@ -115,8 +116,6 @@ Resources:
             Action: 
               - cloudformation:DescribeStacks
               - cloudformation:UpdateStack
-              - s3:PutObject
-              - s3:GetObject
             Resource: '*'
             Condition:
               StringEquals: 
