@@ -109,7 +109,7 @@ Resources:
             Resource: '*'
             Condition:
               StringEquals: 
-                'iam:ResourceTag/ManagedByPipeline': 'true' 
+                's3:ResourceTag/ManagedByPipeline': 'true' 
       Roles:
         - !Ref PipelineAdminRole
 
