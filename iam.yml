@@ -90,6 +90,7 @@ Resources:
               - iam:PassRole
               - s3:PutObject
               - s3:GetObject
+              - codepipeline:StartPipelineExecution
             Resource: '*'
             Condition:
               StringEquals: 
