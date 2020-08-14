@@ -27,23 +27,7 @@ Resources:
       TargetPipelineVersion: 1
       RegisterWithThirdParty: true
 
-  #----- IAM -----
-
-  PipelineExecutionPolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: PipelineExecutionPolicy
-      PolicyDocument:
-        Statement:
-          - Effect: Allow
-            Action:
-              - s3:PutObject
-              - s3:GetObject
-            Resource: !Join ['', [!GetAtt ArtifactBucket.Arn, "/*"]]
-      Roles:
-        - !ImportValue PipelineExecutionRole
-
-#----------------------
+#----------Pipeline------------
 
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
@@ -106,6 +90,9 @@ Resources:
             Location: !Ref ArtifactBucket
             Type: S3
           Region: us-east-1
+      Tags:
+        - Key: ManagedByPipeline
+          Value: 'true'
 
   ArtifactBucket:
     Type: AWS::S3::Bucket
