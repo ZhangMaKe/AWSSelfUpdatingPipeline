@@ -112,4 +112,12 @@ Resources:
           Principal: 
             AWS: 
               - !ImportValue PipelineExecutionRoleArn
+        - 
+          Action: 
+            - s3:DeleteBucket
+          Effect: "Allow"
+          Resource: !Sub "arn:aws:s3:::${ArtifactBucket}"
+          Principal: 
+            AWS: 
+              - !ImportValue PipelineAdminRoleArn
 
