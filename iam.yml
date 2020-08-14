@@ -87,11 +87,13 @@ Resources:
             Action: 
               - ssm:GetParameters
               - codepipeline:UpdatePipeline
-              - iam:PassRole
               - s3:PutObject
               - s3:GetObject
               - s3:DeleteBucket
               - codepipeline:StartPipelineExecution
+              - codepipeline:DeletePipeline
+              - s3:DeleteBucket
+              - codepipeline:DeregisterWebhookWithThirdParty
             Resource: '*'
             Condition:
               StringEquals: 
