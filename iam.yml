@@ -1,0 +1,97 @@
+Resources:
+
+  #----- Roles ----
+
+  PipelineIAMAdminRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - sts:AssumeRole
+            Principal:
+              Service:
+                - cloudformation.amazonaws.com
+      Description: Pipeline Administration Role
+      MaxSessionDuration: 3600
+      RoleName: PipelineIAMAdminRole
+      Tags:
+        - Key: ManagedByPipeline
+          Value: 'true'
+
+  PipelineExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action: 
+              - sts:AssumeRole
+            Principal:
+              Service:
+                - codepipeline.amazonaws.com
+      Description: Pipeline Execution Role
+      MaxSessionDuration: 3600
+      RoleName: PipelineExecutionRole
+      Tags:
+        - Key: ManagedByPipeline
+          Value: 'true'
+
+  PipelineAdminRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - sts:AssumeRole
+            Principal:
+              Service:
+                - cloudformation.amazonaws.com
+      Description: Pipeline Administration Role
+      MaxSessionDuration: 3600
+      RoleName: PipelineAdminRole
+      Tags:
+        - Key: ManagedByPipeline
+          Value: 'true'
+
+  #----- Policies -----
+
+  PipelineIAMAdminPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: PipelineIAMAdminPolicy
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: 
+              - iam:*
+            Resource: '*'
+            Condition:
+              StringEquals: 
+                'iam:ResourceTag/ManagedByPipeline': 'true' 
+      Roles:
+        - !Ref PipelineIAMAdminRole
+
+Outputs:
+  PipelineIAMAdminRoleArn:
+    Description: ARN of IAM role to Administer the IAM Stack
+    Value: !GetAtt PipelineIAMAdminRole.Arn
+    Export:
+      Name: PipelineIAMAdminRoleArn
+  
+  PipelineExecutionRoleArn:
+    Description: ARN of IAM role to Execute the CodePipeline
+    Value: !GetAtt PipelineExecutionRole.Arn
+    Export:
+      Name: PipelineExecutionRoleArn
+
+  PipelineAdminRoleArn:
+    Description: ARN of IAM role to Administer the CodePipeline
+    Value: !GetAtt PipelineAdminRole.Arn
+    Export:
+      Name: PipelineAdminRoleArn
