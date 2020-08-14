@@ -84,6 +84,17 @@ Resources:
       PolicyDocument:
         Statement:
           - Effect: Allow
+            Action:
+              - codepipeline:UpdatePipeline
+              - codepipeline:StartPipelineExecution
+              - codepipeline:DeletePipeline
+              - codepipeline:DeregisterWebhookWithThirdParty
+              - codepipeline:GetPipeline
+            Resource: '*'
+            Condition:
+              StringEquals: 
+                'codepipeline:ResourceTag/ManagedByPipeline': 'true' 
+          - Effect: Allow
             Action: 
               - ssm:GetParameters
               - codepipeline:UpdatePipeline
