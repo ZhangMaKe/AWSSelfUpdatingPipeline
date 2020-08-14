@@ -90,6 +90,7 @@ Resources:
               - iam:PassRole
               - s3:PutObject
               - s3:GetObject
+              - s3:DeleteBucket
               - codepipeline:StartPipelineExecution
             Resource: '*'
             Condition:
@@ -98,6 +99,7 @@ Resources:
           - Effect: Allow
             Action: 
               - iam:PassRole
+              - iam:DeleteRolePolicy
             Resource: '*'
             Condition:
               StringEquals: 
