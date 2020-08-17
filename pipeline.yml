@@ -31,6 +31,39 @@ Resources:
       TargetPipelineVersion: 1
       RegisterWithThirdParty: true
 
+#----- IAM -----
+  PipelineAdminPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: PipelineAdminPolicy
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action:
+              - codepipeline:DeleteWebhook
+              - codepipeline:DeregisterWebhookWithThirdParty
+              - codepipeline:UpdatePipeline
+              - codepipeline:StartPipelineExecution
+              - codepipeline:DeletePipeline
+              - codepipeline:GetPipeline
+            Resource: !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${Pipeline}"
+          - Effect: Allow
+            Action:
+              - s3:DeleteBucket
+              - s3:DeleteBucketPolicy
+            Resource: !GetAtt ArtifactBucket.Arn
+          - Effect: Allow
+            Action: 
+              - iam:PassRole
+              - ssm:GetParameters
+            Resource: '*'
+          - Effect: Allow
+            Action:
+              - iam:PassRole
+            Resource: !ImportValue PipelineAdminRoleArn
+      Roles:
+        - !ImportValue PipelineAdminRole
+
 #----------Pipeline------------
 
   Pipeline:
