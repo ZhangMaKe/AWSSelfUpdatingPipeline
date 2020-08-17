@@ -135,6 +135,7 @@ Resources:
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
+      Name: !Ref PipelineName
       RestartExecutionOnUpdate: true
       RoleArn: !GetAtt PipelineExecutionRole.Arn
       Stages:
