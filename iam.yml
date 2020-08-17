@@ -98,7 +98,7 @@ Resources:
             Resource: '*'
             Condition:
               StringEquals: 
-                'codepipeline:ResourceTag/ManagedByPipeline': 'true' 
+                'aws:ResourceTag/ManagedByPipeline': 'true' 
           - Effect: Allow
             Action: 
               - ssm:GetParameters
