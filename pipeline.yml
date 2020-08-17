@@ -123,7 +123,7 @@ Resources:
           - Effect: Allow
             Action: 
               - iam:PassRole
-            Resource: !GetAtt PipelineExecutionRole.Arn
+            Resource: !GetAtt PipelineAdminRole.Arn
       Roles:
         - !Ref PipelineExecutionRole
 
