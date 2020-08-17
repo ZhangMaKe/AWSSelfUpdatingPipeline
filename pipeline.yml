@@ -156,22 +156,6 @@ Resources:
                 - Name: infra-source
         - Name: Administration
           Actions:
-            # - Name: AdministerIAM
-            #   ActionTypeId:
-            #       Category: Deploy
-            #       Owner: AWS
-            #       Provider: CloudFormation
-            #       Version: '1'
-            #   Configuration:
-            #     OutputFileName: iamStackOutput.json
-            #     Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-            #     RoleArn: !ImportValue PipelineIAMAdminRoleArn
-            #     StackName: !Ref IAMStackName
-            #     ActionMode: CREATE_UPDATE
-            #     TemplatePath: infra-source::iam.yml
-            #   InputArtifacts:
-            #     - Name: infra-source
-            #   RunOrder: 1
             - Name: AdministerPipeline
               ActionTypeId:
                   Category: Deploy
@@ -181,6 +165,7 @@ Resources:
               Configuration:
                 OutputFileName: pipelineStackOutput.json
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                ParameterOverrides: !Join ['', ['{"TriggerBranch": "', !Ref TriggerBranch, '"}']]
                 RoleArn: !GetAtt PipelineAdminRole.Arn
                 StackName: !Ref AWS::StackName
                 ActionMode: CREATE_UPDATE
