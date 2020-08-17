@@ -81,11 +81,14 @@ Resources:
             Action:
               - codepipeline:DeleteWebhook
               - codepipeline:DeregisterWebhookWithThirdParty
-              - codepipeline:UpdatePipeline
               - codepipeline:StartPipelineExecution
               - codepipeline:DeletePipeline
               - codepipeline:GetPipeline
             Resource: !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${Pipeline}"
+          - Effect: Allow
+            Action:
+              - codepipeline:UpdatePipeline
+            Resource: !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${Pipeline}*"
           - Effect: Allow
             Action:
               - s3:DeleteBucket
