@@ -178,7 +178,7 @@ Resources:
               Configuration:
                 OutputFileName: pipelineStackOutput.json
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                RoleArn: !ImportValue PipelineAdminRoleArn
+                RoleArn: !GetAtt PipelineAdminRole.Arn
                 StackName: !Ref AWS::StackName
                 ActionMode: CREATE_UPDATE
                 TemplatePath: infra-source::pipeline.yml
