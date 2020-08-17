@@ -103,7 +103,7 @@ Resources:
     Properties:
       Tags:
         - Key: ManagedByPipeline
-          Value: true
+          Value: 'true'
 
   ArtifactBucketPolicy:
     Type: AWS::S3::BucketPolicy
