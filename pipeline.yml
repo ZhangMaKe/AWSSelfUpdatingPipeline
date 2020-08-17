@@ -100,9 +100,10 @@ Resources:
 
   ArtifactBucket:
     Type: AWS::S3::Bucket
-    Tags:
-      - Key: ManagedByPipeline
-        Value: true
+    Properties:
+      Tags:
+        - Key: ManagedByPipeline
+          Value: true
 
   ArtifactBucketPolicy:
     Type: AWS::S3::BucketPolicy
