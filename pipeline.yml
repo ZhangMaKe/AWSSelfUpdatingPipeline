@@ -100,6 +100,12 @@ Resources:
             Action:
               - iam:PassRole
             Resource: !GetAtt PipelineAdminRole.Arn
+          - Effect: Allow
+            Action: 
+              - iam:*
+            Resource: 
+              - !GetAtt PipelineAdminRole.Arn
+              - !GetAtt PipelineExecutionRole.Arn
       Roles:
         - !Ref PipelineAdminRole
 
