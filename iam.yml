@@ -85,6 +85,10 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
+              - codepipeline:DeleteWebhook
+            Resource: '*'
+          - Effect: Allow
+            Action:
               - codepipeline:UpdatePipeline
               - codepipeline:StartPipelineExecution
               - codepipeline:DeletePipeline
