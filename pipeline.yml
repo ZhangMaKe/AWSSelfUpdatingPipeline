@@ -11,9 +11,9 @@ Parameters:
     Type: String
     Default: IAMStack
 
-  ConditionTagKey:
+  PipelineName:
     Type: String
-    Default: ManagedByPipeline
+    Default: DemoPipeline
 
 Resources:
 
@@ -84,11 +84,11 @@ Resources:
               - codepipeline:StartPipelineExecution
               - codepipeline:DeletePipeline
               - codepipeline:GetPipeline
-            Resource: !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${Pipeline}"
+            Resource: !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${PipelineName}"
           - Effect: Allow
             Action:
               - codepipeline:UpdatePipeline
-            Resource: !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${Pipeline}*"
+            Resource: !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${PipelineName}*"
           - Effect: Allow
             Action:
               - s3:DeleteBucket
@@ -135,7 +135,6 @@ Resources:
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
-      Name: DemoPipeline
       RestartExecutionOnUpdate: true
       RoleArn: !GetAtt PipelineExecutionRole.Arn
       Stages:
