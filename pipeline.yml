@@ -11,6 +11,10 @@ Parameters:
     Type: String
     Default: IAMStack
 
+  ConditionTagKey:
+    Type: String
+    Default: ManagedByPipeline
+
 Resources:
 
   GithubWebhook:
@@ -91,7 +95,7 @@ Resources:
             Type: S3
           Region: us-east-1
       Tags:
-        - Key: ManagedByPipeline
+        - Key: !Ref ConditionTagKey
           Value: 'true'
 
   ArtifactBucket:
