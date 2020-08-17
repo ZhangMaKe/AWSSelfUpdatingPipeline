@@ -95,7 +95,7 @@ Resources:
             Type: S3
           Region: us-east-1
       Tags:
-        - Key: !Ref ConditionTagKey
+        - Key: ManagedByPipeline
           Value: 'true'
 
   ArtifactBucket:
