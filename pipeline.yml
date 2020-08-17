@@ -55,7 +55,7 @@ Resources:
                   OAuthToken: !Ref GHToken
               OutputArtifacts:
                 - Name: infra-source
-        - Name: AdministerIAM
+        - Name: Administration
           Actions:
             - Name: AdministerIAM
               ActionTypeId:
