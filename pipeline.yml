@@ -48,9 +48,6 @@ Resources:
       Description: Pipeline Execution Role
       MaxSessionDuration: 3600
       RoleName: PipelineExecutionRole
-      Tags:
-        - Key: ManagedByPipeline
-          Value: 'true'
 
   PipelineAdminRole:
     Type: AWS::IAM::Role
@@ -67,9 +64,6 @@ Resources:
       Description: Pipeline Administration Role
       MaxSessionDuration: 3600
       RoleName: PipelineAdminRole
-      Tags:
-        - Key: ManagedByPipeline
-          Value: 'true'
 
   PipelineAdminPolicy:
     Type: AWS::IAM::Policy
@@ -178,16 +172,9 @@ Resources:
             Location: !Ref ArtifactBucket
             Type: S3
           Region: us-east-1
-      Tags:
-        - Key: ManagedByPipeline
-          Value: 'true'
 
   ArtifactBucket:
     Type: AWS::S3::Bucket
-    Properties:
-      Tags:
-        - Key: ManagedByPipeline
-          Value: 'true'
 
   ArtifactBucketPolicy:
     Type: AWS::S3::BucketPolicy
