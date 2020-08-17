@@ -134,7 +134,7 @@ Resources:
     Properties:
       Name: DemoPipeline
       RestartExecutionOnUpdate: true
-      RoleArn: !ImportValue PipelineExecutionRoleArn
+      RoleArn: !GetAtt PipelineExecutionRole.Arn
       Stages:
         - Name: Source
           Actions:
