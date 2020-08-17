@@ -215,5 +215,5 @@ Resources:
           Resource: !Sub "arn:aws:s3:::${ArtifactBucket}/*"
           Principal: 
             AWS: 
-              - !ImportValue PipelineExecutionRoleArn
+              - !GetAtt PipelineExecutionRole.Arn
 
